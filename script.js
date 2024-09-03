@@ -27,7 +27,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function filterTable() {
-    const input = document.getElementById('searchInput').value.toLowerCase();
+    const searchInput = document.getElementById('searchInput').value.toLowerCase();
+    const stateInput = document.getElementById('stateInput').value.toLowerCase();
     const rows = document.getElementById('dataTable').getElementsByTagName('tr');
 
     for (let i = 1; i < rows.length; i++) {
@@ -35,7 +36,10 @@ function filterTable() {
         const tags = rows[i].getElementsByTagName('td')[2].textContent.toLowerCase();
         const location = rows[i].getElementsByTagName('td')[3].textContent.toLowerCase();
 
-        if (position.includes(input) || tags.includes(input) || location.includes(input)) {
+        if (
+            (position.includes(searchInput) || tags.includes(searchInput)) &&
+            (location.includes(stateInput) || stateInput === '')
+        ) {
             rows[i].style.display = '';
         } else {
             rows[i].style.display = 'none';
