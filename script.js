@@ -9,32 +9,35 @@ document.addEventListener('DOMContentLoaded', function() {
             const rows = doc.querySelectorAll('table tbody tr');
 
             const cardContainer = document.getElementById('cardContainer');
-            rows.forEach((row, index) => {
-                // Skip header row and any rows that are empty
+            rows.forEach((row) => {
                 const cols = row.querySelectorAll('td');
-                if (cols.length === 0 || cols[0].innerText.trim() === 'Name') return;
+                
+                // Explicitly check if this row is the header
+                if (cols[0] && cols[0].innerText.trim().toLowerCase() === 'name') {
+                    return; // Skip the header row
+                }
 
                 const card = document.createElement('div');
                 card.className = 'card';
 
                 const name = document.createElement('h2');
-                name.textContent = cols[0].innerText;
+                name.textContent = cols[0].innerText.trim();
                 card.appendChild(name);
 
                 const position = document.createElement('p');
-                position.innerHTML = `<strong>Position:</strong> ${cols[1].innerText}`;
+                position.innerHTML = `<strong>Position:</strong> ${cols[1].innerText.trim()}`;
                 card.appendChild(position);
 
                 const tags = document.createElement('p');
-                tags.innerHTML = `<strong>Tags:</strong> ${cols[2].innerText}`;
+                tags.innerHTML = `<strong>Tags:</strong> ${cols[2].innerText.trim()}`;
                 card.appendChild(tags);
 
                 const location = document.createElement('p');
-                location.innerHTML = `<strong>Location:</strong> ${cols[3].innerText}`;
+                location.innerHTML = `<strong>Location:</strong> ${cols[3].innerText.trim()}`;
                 card.appendChild(location);
 
                 const email = document.createElement('p');
-                email.innerHTML = `<strong>Contact Email:</strong> ${cols[4].innerText}`;
+                email.innerHTML = `<strong>Contact Email:</strong> ${cols[4].innerText.trim()}`;
                 card.appendChild(email);
 
                 cardContainer.appendChild(card);
