@@ -9,14 +9,8 @@
             font-family: Arial, sans-serif;
             margin: 20px;
         }
-        #searchInput, #cityInput {
+        #searchInput, #cityInput, #stateInput {
             width: 300px;
-            padding: 10px;
-            margin-bottom: 20px;
-            margin-right: 10px;
-        }
-        #stateInput {
-            width: 320px;
             padding: 10px;
             margin-bottom: 20px;
             margin-right: 10px;
@@ -47,60 +41,7 @@
 
     <input type="text" id="searchInput" placeholder="Search by Position..." onkeyup="filterCards()">
     <input type="text" id="cityInput" placeholder="Enter City..." onkeyup="filterCards()">
-    
-    <select id="stateInput" onchange="filterCards()">
-        <option value="">Select State...</option>
-        <option value="Alabama">Alabama</option>
-        <option value="Alaska">Alaska</option>
-        <option value="Arizona">Arizona</option>
-        <option value="Arkansas">Arkansas</option>
-        <option value="California">California</option>
-        <option value="Colorado">Colorado</option>
-        <option value="Connecticut">Connecticut</option>
-        <option value="Delaware">Delaware</option>
-        <option value="Florida">Florida</option>
-        <option value="Georgia">Georgia</option>
-        <option value="Hawaii">Hawaii</option>
-        <option value="Idaho">Idaho</option>
-        <option value="Illinois">Illinois</option>
-        <option value="Indiana">Indiana</option>
-        <option value="Iowa">Iowa</option>
-        <option value="Kansas">Kansas</option>
-        <option value="Kentucky">Kentucky</option>
-        <option value="Louisiana">Louisiana</option>
-        <option value="Maine">Maine</option>
-        <option value="Maryland">Maryland</option>
-        <option value="Massachusetts">Massachusetts</option>
-        <option value="Michigan">Michigan</option>
-        <option value="Minnesota">Minnesota</option>
-        <option value="Mississippi">Mississippi</option>
-        <option value="Missouri">Missouri</option>
-        <option value="Montana">Montana</option>
-        <option value="Nebraska">Nebraska</option>
-        <option value="Nevada">Nevada</option>
-        <option value="New Hampshire">New Hampshire</option>
-        <option value="New Jersey">New Jersey</option>
-        <option value="New Mexico">New Mexico</option>
-        <option value="New York">New York</option>
-        <option value="North Carolina">North Carolina</option>
-        <option value="North Dakota">North Dakota</option>
-        <option value="Ohio">Ohio</option>
-        <option value="Oklahoma">Oklahoma</option>
-        <option value="Oregon">Oregon</option>
-        <option value="Pennsylvania">Pennsylvania</option>
-        <option value="Rhode Island">Rhode Island</option>
-        <option value="South Carolina">South Carolina</option>
-        <option value="South Dakota">South Dakota</option>
-        <option value="Tennessee">Tennessee</option>
-        <option value="Texas">Texas</option>
-        <option value="Utah">Utah</option>
-        <option value="Vermont">Vermont</option>
-        <option value="Virginia">Virginia</option>
-        <option value="Washington">Washington</option>
-        <option value="West Virginia">West Virginia</option>
-        <option value="Wisconsin">Wisconsin</option>
-        <option value="Wyoming">Wyoming</option>
-    </select>
+    <input type="text" id="stateInput" placeholder="Enter State (Full Name or Abbreviation)..." onkeyup="filterCards()">
 
     <div class="card-container" id="cardContainer">
         <!-- Cards will be populated here by script.js -->
@@ -109,6 +50,22 @@
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const sheetUrl = 'https://docs.google.com/spreadsheets/d/1p5EUNGud_FE5gvlYZqr72IhifttLZEc-FNgwFbR0m1U/pubhtml';
+
+        // State abbreviations map
+        const stateAbbreviations = {
+            "al": "alabama", "ak": "alaska", "az": "arizona", "ar": "arkansas",
+            "ca": "california", "co": "colorado", "ct": "connecticut", "de": "delaware",
+            "fl": "florida", "ga": "georgia", "hi": "hawaii", "id": "idaho", "il": "illinois",
+            "in": "indiana", "ia": "iowa", "ks": "kansas", "ky": "kentucky", "la": "louisiana",
+            "me": "maine", "md": "maryland", "ma": "massachusetts", "mi": "michigan",
+            "mn": "minnesota", "ms": "mississippi", "mo": "missouri", "mt": "montana",
+            "ne": "nebraska", "nv": "nevada", "nh": "new hampshire", "nj": "new jersey",
+            "nm": "new mexico", "ny": "new york", "nc": "north carolina", "nd": "north dakota",
+            "oh": "ohio", "ok": "oklahoma", "or": "oregon", "pa": "pennsylvania", "ri": "rhode island",
+            "sc": "south carolina", "sd": "south dakota", "tn": "tennessee", "tx": "texas",
+            "ut": "utah", "vt": "vermont", "va": "virginia", "wa": "washington",
+            "wv": "west virginia", "wi": "wisconsin", "wy": "wyoming"
+        };
 
         fetch(sheetUrl)
             .then(response => response.text())
@@ -125,7 +82,7 @@
                     const nameValue = cols[0]?.innerText.trim();
                     const positionValue = cols[1]?.innerText.trim();
                     const cityValue = cols[2]?.innerText.trim();
-                    const stateValue = cols[3]?.innerText.trim();
+                    const stateValue = cols[3]?.innerText.trim().toLowerCase(); // normalize to lowercase
                     const contactPhoneValue = cols[4]?.innerText.trim();
                     const contactEmailValue = cols[5]?.innerText.trim();
                     const reviewLinkValue = cols[6]?.innerText.trim();
@@ -191,7 +148,7 @@
                 filterCards(); // Ensure it runs on initial load
                 document.getElementById('searchInput').addEventListener('input', filterCards);
                 document.getElementById('cityInput').addEventListener('input', filterCards);
-                document.getElementById('stateInput').addEventListener('change', filterCards);
+                document.getElementById('stateInput').addEventListener('input', filterCards);
             })
             .catch(error => console.error('Error fetching the Google Sheets data:', error));
     });
@@ -199,7 +156,13 @@
     function filterCards() {
         const searchInput = document.getElementById('searchInput').value.toLowerCase();
         const cityInput = document.getElementById('cityInput').value.toLowerCase();
-        const stateInput = document.getElementById('stateInput').value.toLowerCase();
+        let stateInput = document.getElementById('stateInput').value.toLowerCase();
+
+        // Check if the input is an abbreviation, and if so, map it to the full state name
+        if (stateInput.length === 2 && stateAbbreviations[stateInput]) {
+            stateInput = stateAbbreviations[stateInput];
+        }
+
         const cards = document.querySelectorAll('.card');
 
         cards.forEach(card => {
