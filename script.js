@@ -11,35 +11,54 @@ document.addEventListener('DOMContentLoaded', function() {
             const cardContainer = document.getElementById('cardContainer');
             rows.forEach((row) => {
                 const cols = row.querySelectorAll('td');
-
-                // Check if the first column (Name) exists and is not empty
-                if (!cols[0] || cols[0].innerText.trim() === '' || cols[0].innerText.trim().toLowerCase() === 'name') {
-                    return; // Skip this row
+                
+                // Check if this row is the header or has an empty name
+                const nameValue = cols[0]?.innerText.trim();
+                if (!nameValue || nameValue.toLowerCase() === 'name') {
+                    return; // Skip header and rows with empty "Name" field
                 }
 
-                // Create card elements
                 const card = document.createElement('div');
                 card.className = 'card';
 
                 const name = document.createElement('h2');
-                name.textContent = cols[0].innerText.trim();
+                name.textContent = nameValue;
                 card.appendChild(name);
 
                 const position = document.createElement('p');
-                position.innerHTML = `<strong>Position:</strong> ${cols[1] ? cols[1].innerText.trim() : 'N/A'}`;
+                position.innerHTML = `<strong>Position:</strong> ${cols[1]?.innerText.trim() || 'N/A'}`;
                 card.appendChild(position);
 
                 const tags = document.createElement('p');
-                tags.innerHTML = `<strong>Tags:</strong> ${cols[2] ? cols[2].innerText.trim() : 'N/A'}`;
+                tags.innerHTML = `<strong>Tags:</strong> ${cols[2]?.innerText.trim() || 'N/A'}`;
                 card.appendChild(tags);
 
                 const location = document.createElement('p');
-                location.innerHTML = `<strong>Location:</strong> ${cols[3] ? cols[3].innerText.trim() : 'N/A'}`;
+                location.innerHTML = `<strong>Location:</strong> ${cols[3]?.innerText.trim() || 'N/A'}`;
                 card.appendChild(location);
 
                 const email = document.createElement('p');
-                email.innerHTML = `<strong>Contact Email:</strong> ${cols[4] ? cols[4].innerText.trim() : 'N/A'}`;
+                email.innerHTML = `<strong>Contact Email:</strong> ${cols[4]?.innerText.trim() || 'N/A'}`;
                 card.appendChild(email);
+
+                // Create the "Leave Review" button with hyperlink
+                const reviewLink = cols[5]?.innerText.trim();
+                if (reviewLink) {
+                    const reviewButton = document.createElement('a');
+                    reviewButton.href = reviewLink;
+                    reviewButton.target = '_blank';
+                    reviewButton.className = 'review-button';
+                    reviewButton.textContent = 'Leave Review';
+                    reviewButton.style.display = 'inline-block';
+                    reviewButton.style.padding = '10px 15px';
+                    reviewButton.style.marginTop = '10px';
+                    reviewButton.style.backgroundColor = '#007BFF';
+                    reviewButton.style.color = '#fff';
+                    reviewButton.style.borderRadius = '5px';
+                    reviewButton.style.textDecoration = 'none';
+                    reviewButton.style.textAlign = 'center';
+                    card.appendChild(reviewButton);
+                }
 
                 cardContainer.appendChild(card);
             });
