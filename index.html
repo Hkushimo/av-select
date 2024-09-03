@@ -15,40 +15,34 @@
             margin-bottom: 20px;
             margin-right: 10px;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
         }
-        table, th, td {
+        .card {
+            background-color: #f9f9f9;
             border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        th, td {
-            padding: 10px;
-            text-align: left;
+        .card h2 {
+            margin-top: 0;
         }
-        th {
-            background-color: #f2f2f2;
+        .card p {
+            margin: 5px 0;
         }
     </style>
 </head>
 <body>
     <h1>Google Sheets Data Search</h1>
-    <input type="text" id="searchInput" placeholder="Search by Position or Tags..." onkeyup="filterTable()">
-    <input type="text" id="stateInput" placeholder="Enter State..." onkeyup="filterTable()">
-    <table id="dataTable">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Position</th>
-                <th>Tags</th>
-                <th>Location</th>
-                <th>Contact Email</th>
-            </tr>
-        </thead>
-        <tbody id="tableBody">
-            <!-- Data will be populated here by script.js -->
-        </tbody>
-    </table>
+    <input type="text" id="searchInput" placeholder="Search by Position or Tags..." onkeyup="filterCards()">
+    <input type="text" id="stateInput" placeholder="Enter State..." onkeyup="filterCards()">
+    <div class="card-container" id="cardContainer">
+        <!-- Cards will be populated here by script.js -->
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
