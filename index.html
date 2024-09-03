@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Sheets Search</title>
+    <title>Google Sheets Data Search</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
         }
-        #searchInput {
+        #searchInput, #stateInput {
             width: 300px;
             padding: 10px;
             margin-bottom: 20px;
+            margin-right: 10px;
         }
         table {
             width: 100%;
@@ -32,7 +33,8 @@
 </head>
 <body>
     <h1>Google Sheets Data Search</h1>
-    <input type="text" id="searchInput" placeholder="Search by Position, Tags, or Location..." onkeyup="filterTable()">
+    <input type="text" id="searchInput" placeholder="Search by Position or Tags..." onkeyup="filterTable()">
+    <input type="text" id="stateInput" placeholder="Enter State..." onkeyup="filterTable()">
     <table id="dataTable">
         <thead>
             <tr>
