@@ -1,13 +1,11 @@
-const sheetUrl = "https://spreadsheets.google.com/feeds/list/1p5EUNGud_FE5gvlYZqr72IhifttLZEc-FNgwFbR0m1U/1/public/values?alt=json";
-
-let laborers = [];
+const sheetUrl = "https://docs.google.com/spreadsheets/d/1p5EUNGud_FE5gvlYZqr72IhifttLZEc-FNgwFbR0m1U/export?format=csv";
 
 fetch(sheetUrl)
-    .then(response => response.json())
-    .then(data => {
-        console.log("Raw JSON Data:", data); // Debugging: Log the raw JSON data
-        laborers = parseGoogleSheetJSON(data);
-        console.log("Parsed Laborers Array:", laborers); // Debugging: Log the parsed laborers array
+    .then(response => response.text())
+    .then(csvText => {
+        const rows = csvText.split("\n").map(row => row.split(","));
+        console.log(rows);
+        // Process and display the rows as needed
     })
     .catch(error => console.error("Error fetching data:", error));
 
