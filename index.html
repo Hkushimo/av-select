@@ -3,36 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laborer Lookup</title>
+    <title>Google Sheets Data Fetch</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
         }
-        input, button {
-            padding: 10px;
-            margin: 5px;
-        }
-        .result {
+        table {
+            width: 100%;
+            border-collapse: collapse;
             margin-top: 20px;
         }
-        .result p {
-            border-bottom: 1px solid #ddd;
-            padding: 5px 0;
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f4f4f4;
         }
     </style>
 </head>
 <body>
 
-    <h1>Laborer Lookup</h1>
-
-    <input type="text" id="positionInput" placeholder="Enter position">
-    <input type="text" id="locationInput" placeholder="Enter location">
-    <input type="text" id="tagsInput" placeholder="Enter tags/experience">
-    <button onclick="lookupLaborer()">Search</button>
-
-    <div class="result" id="result">
-        <!-- The search results will be displayed here -->
+    <h1>Google Sheets Data Fetch</h1>
+    <p>Data from Google Sheets:</p>
+    <div id="table-container">
+        <!-- The fetched data will be displayed here -->
     </div>
 
     <script src="script.js"></script>
