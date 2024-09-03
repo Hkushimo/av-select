@@ -9,13 +9,16 @@ document.addEventListener('DOMContentLoaded', function() {
             const rows = doc.querySelectorAll('table tbody tr');
 
             const cardContainer = document.getElementById('cardContainer');
-            rows.forEach((row) => {
+            rows.forEach((row, index) => {
                 const cols = row.querySelectorAll('td');
                 
-                // Check if this row is the header or has an empty name
+                // Skip the header row or rows with empty required fields
                 const nameValue = cols[0]?.innerText.trim();
-                if (!nameValue || nameValue.toLowerCase() === 'name') {
-                    return; // Skip header and rows with empty "Name" field
+                const positionValue = cols[1]?.innerText.trim();
+                const locationValue = cols[3]?.innerText.trim();
+
+                if (index === 0 || !nameValue || !positionValue || !locationValue) {
+                    return; // Skip header and rows with missing critical data
                 }
 
                 const card = document.createElement('div');
@@ -26,24 +29,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 card.appendChild(name);
 
                 const position = document.createElement('p');
-                position.innerHTML = `<strong>Position:</strong> ${cols[1]?.innerText.trim() || 'N/A'}`;
+                position.innerHTML = `<strong>Position:</strong> ${positionValue || 'N/A'}`;
                 card.appendChild(position);
 
                 const location = document.createElement('p');
-                location.innerHTML = `<strong>Location:</strong> ${cols[3]?.innerText.trim() || 'N/A'}`;
+                location.innerHTML = `<strong>Location:</strong> ${locationValue || 'N/A'}`;
                 card.appendChild(location);
 
                 const email = document.createElement('p');
                 email.innerHTML = `<strong>Contact Email:</strong> ${cols[4]?.innerText.trim() || 'N/A'}`;
                 card.appendChild(email);
 
-                // Add the "Rating" field before the "Leave Review" button
-                const ratingValue = cols[6]?.innerText.trim() || 'No Ratings';
                 const rating = document.createElement('p');
-                rating.innerHTML = `<strong>Rating:</strong> ${ratingValue}`;
+                rating.innerHTML = `<strong>Rating:</strong> ${cols[6]?.innerText.trim() || 'No Ratings'}`;
                 card.appendChild(rating);
 
-                // Create the "Leave Review" button with hyperlink
                 const reviewLink = cols[5]?.innerText.trim();
                 if (reviewLink) {
                     const reviewButton = document.createElement('a');
@@ -67,28 +67,3 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => console.error('Error fetching the Google Sheets data:', error));
 });
-
-function filterCards() {
-    const searchInput = document.getElementById('searchInput').value.toLowerCase();
-    const cityInput = document.getElementById('cityInput').value.toLowerCase();
-    const stateInput = document.getElementById('stateInput').value;
-    const cards = document.querySelectorAll('.card');
-
-    cards.forEach(card => {
-        const position = card.querySelector('p:nth-child(2)').textContent.toLowerCase();
-        const location = card.querySelector('p:nth-child(3)').textContent.toLowerCase();
-
-        const city = location.split(',')[0].trim().toLowerCase();  // Extract city from "City, State"
-        const state = location.split(',')[1]?.trim(); // Extract state from "City, State"
-
-        const matchesSearch = searchInput === "" || position.includes(searchInput);
-        const matchesCity = cityInput === "" || city.includes(cityInput);
-        const matchesState = stateInput === "" || state === stateInput;
-
-        if (matchesSearch && matchesCity && matchesState) {
-            card.style.display = 'block';
-        } else {
-            card.style.display = 'none';
-        }
-    });
-}
