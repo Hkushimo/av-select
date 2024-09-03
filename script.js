@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 card.appendChild(email);
 
                 // Add the "Rating" field before the "Leave Review" button
-                const ratingValue = cols[6]?.innerText.trim() || 'No Ratings';
+                const ratingValue = cols[6]?.innerText.trim() || '0';
                 const rating = document.createElement('p');
                 rating.innerHTML = `<strong>Rating:</strong> ${ratingValue}`;
                 card.appendChild(rating);
