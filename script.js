@@ -72,6 +72,37 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 cardContainer.appendChild(card);
             });
+
+            // After generating the cards, attach the filter functionality
+            filterCards(); // Ensure it runs on initial load
+            document.getElementById('searchInput').addEventListener('input', filterCards);
+            document.getElementById('cityInput').addEventListener('input', filterCards);
+            document.getElementById('stateInput').addEventListener('change', filterCards);
         })
         .catch(error => console.error('Error fetching the Google Sheets data:', error));
 });
+
+function filterCards() {
+    const searchInput = document.getElementById('searchInput').value.toLowerCase();
+    const cityInput = document.getElementById('cityInput').value.toLowerCase();
+    const stateInput = document.getElementById('stateInput').value.toLowerCase();
+    const cards = document.querySelectorAll('.card');
+
+    cards.forEach(card => {
+        const position = card.querySelector('p:nth-child(2)').textContent.toLowerCase();
+        const location = card.querySelector('p:nth-child(3)').textContent.toLowerCase();
+
+        // Extract city and state from location text
+        const [cardCity, cardState] = location.split(',').map(item => item.trim().toLowerCase());
+
+        const matchesSearch = searchInput === "" || position.includes(searchInput);
+        const matchesCity = cityInput === "" || cardCity.includes(cityInput);
+        const matchesState = stateInput === "" || cardState.includes(stateInput);
+
+        if (matchesSearch && matchesCity && matchesState) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
