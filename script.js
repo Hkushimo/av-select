@@ -82,10 +82,10 @@ function filterCards() {
         const tags = card.querySelector('p:nth-child(3)').textContent.toLowerCase();
         const location = card.querySelector('p:nth-child(4)').textContent.toLowerCase();
 
-        if (
-            (position.includes(searchInput) || tags.includes(searchInput)) &&
-            (location.includes(stateInput) || stateInput === '')
-        ) {
+        const matchesSearch = searchInput === "" || position.includes(searchInput) || tags.includes(searchInput);
+        const matchesState = stateInput === "" || location.includes(stateInput);
+
+        if (matchesSearch && matchesState) {
             card.style.display = 'block';
         } else {
             card.style.display = 'none';
