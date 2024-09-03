@@ -9,13 +9,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const rows = doc.querySelectorAll('table tbody tr');
 
             const cardContainer = document.getElementById('cardContainer');
-            rows.forEach((row) => {
+            rows.forEach((row, index) => {
+                // Skip the first row (header)
+                if (index === 0) return;
+
                 const cols = row.querySelectorAll('td');
-                
-                // Explicitly check if this row is the header
-                if (cols[0] && cols[0].innerText.trim().toLowerCase() === 'name') {
-                    return; // Skip the header row
-                }
 
                 const card = document.createElement('div');
                 card.className = 'card';
