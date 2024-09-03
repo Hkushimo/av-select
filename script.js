@@ -37,14 +37,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 position.innerHTML = `<strong>Position:</strong> ${positionValue}`;
                 card.appendChild(position);
 
-                // Separate fields for City and State
-                const city = document.createElement('p');
-                city.innerHTML = `<strong>City:</strong> ${cityValue}`;
-                card.appendChild(city);
-
-                const state = document.createElement('p');
-                state.innerHTML = `<strong>State:</strong> ${stateValue}`;
-                card.appendChild(state);
+                const location = document.createElement('p');
+                location.innerHTML = `<strong>Location:</strong> ${cityValue}, ${stateValue}`;
+                card.appendChild(location);
 
                 const contactPhone = document.createElement('p');
                 contactPhone.innerHTML = `<strong>Contact Phone:</strong> ${contactPhoneValue}`;
@@ -95,12 +90,14 @@ function filterCards() {
 
     cards.forEach(card => {
         const position = card.querySelector('p:nth-child(2)').textContent.toLowerCase();
-        const city = card.querySelector('p:nth-child(3)').textContent.toLowerCase();
-        const state = card.querySelector('p:nth-child(4)').textContent.toLowerCase();
+        const location = card.querySelector('p:nth-child(3)').textContent.toLowerCase();
+
+        // Extract city and state from location text
+        const [cardCity, cardState] = location.split(',').map(item => item.trim().toLowerCase());
 
         const matchesSearch = searchInput === "" || position.includes(searchInput);
-        const matchesCity = cityInput === "" || city.includes(cityInput);
-        const matchesState = stateInput === "" || state.includes(stateInput);
+        const matchesCity = cityInput === "" || cardCity.includes(cityInput);
+        const matchesState = stateInput === "" || cardState === stateInput;  // Exact match for state
 
         if (matchesSearch && matchesCity && matchesState) {
             card.style.display = 'block';
