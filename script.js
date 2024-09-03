@@ -37,9 +37,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 position.innerHTML = `<strong>Position:</strong> ${positionValue}`;
                 card.appendChild(position);
 
-                const location = document.createElement('p');
-                location.innerHTML = `<strong>Location:</strong> ${cityValue}, ${stateValue}`;
-                card.appendChild(location);
+                // Display City and State as separate fields
+                const city = document.createElement('p');
+                city.innerHTML = `<strong>City:</strong> ${cityValue}`;
+                card.appendChild(city);
+
+                const state = document.createElement('p');
+                state.innerHTML = `<strong>State:</strong> ${stateValue}`;
+                card.appendChild(state);
 
                 const contactPhone = document.createElement('p');
                 contactPhone.innerHTML = `<strong>Contact Phone:</strong> ${contactPhoneValue}`;
@@ -73,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 cardContainer.appendChild(card);
             });
 
-            // After generating the cards, attach the filter functionality
+            // Attach the filter functionality after cards are generated
             filterCards(); // Ensure it runs on initial load
             document.getElementById('searchInput').addEventListener('input', filterCards);
             document.getElementById('cityInput').addEventListener('input', filterCards);
@@ -81,3 +86,26 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => console.error('Error fetching the Google Sheets data:', error));
 });
+
+function filterCards() {
+    const searchInput = document.getElementById('searchInput').value.toLowerCase();
+    const cityInput = document.getElementById('cityInput').value.toLowerCase();
+    const stateInput = document.getElementById('stateInput').value.toLowerCase();
+    const cards = document.querySelectorAll('.card');
+
+    cards.forEach(card => {
+        const position = card.querySelector('p:nth-child(2)').textContent.toLowerCase();
+        const city = card.querySelector('p:nth-child(3)').textContent.toLowerCase();
+        const state = card.querySelector('p:nth-child(4)').textContent.toLowerCase();
+
+        const matchesSearch = searchInput === "" || position.includes(searchInput);
+        const matchesCity = cityInput === "" || city.includes(cityInput);
+        const matchesState = stateInput === "" || state.includes(stateInput);
+
+        if (matchesSearch && matchesCity && matchesState) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
