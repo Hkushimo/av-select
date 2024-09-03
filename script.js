@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             const parser = new DOMParser();
             const doc = parser.parseFromString(data, 'text/html');
-            const rows = doc.querySelectorAll('table tbody tr'); // Assuming 'Ranked Labor' is the second sheet
+            const rows = doc.querySelectorAll('table tbody tr');
 
             const cardContainer = document.getElementById('cardContainer');
             rows.forEach((row) => {
