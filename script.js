@@ -1,18 +1,24 @@
 document.addEventListener('DOMContentLoaded', function() {
-    fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQSR7y1JIpzVBlA7MsWqkRJKIoHtQ6MQQOwcrs88Gvj76nv2Ykg0xuN0l6pDW0AKrsiJ8oK8aVQSVAt/pub?gid=0&single=true&output=tsv')
+    const sheetUrl = 'https://docs.google.com/spreadsheets/d/1p5EUNGud_FE5gvlYZqr72IhifttLZEc-FNgwFbR0m1U/pubhtml';
+
+    fetch(sheetUrl)
         .then(response => response.text())
         .then(data => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(data, 'text/html');
+            const rows = doc.querySelectorAll('table tbody tr');
+
             const tableBody = document.getElementById('tableBody');
-            const rows = data.split('\n');
-            rows.forEach((row, index) => {
-                if (index === 0) return; // Skip header row
-                const cols = row.split('\t');
+            rows.forEach(row => {
+                const cols = row.querySelectorAll('td');
                 const tr = document.createElement('tr');
+
                 cols.forEach(col => {
                     const td = document.createElement('td');
-                    td.textContent = col;
+                    td.textContent = col.innerText;
                     tr.appendChild(td);
                 });
+
                 tableBody.appendChild(tr);
             });
         })
