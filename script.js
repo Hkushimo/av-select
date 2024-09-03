@@ -9,12 +9,15 @@ document.addEventListener('DOMContentLoaded', function() {
             const rows = doc.querySelectorAll('table tbody tr');
 
             const cardContainer = document.getElementById('cardContainer');
-            rows.forEach((row, index) => {
-                // Skip the first row (header)
-                if (index === 0) return;
-
+            rows.forEach((row) => {
                 const cols = row.querySelectorAll('td');
 
+                // Check if the first column (Name) exists and is not empty
+                if (!cols[0] || cols[0].innerText.trim() === '' || cols[0].innerText.trim().toLowerCase() === 'name') {
+                    return; // Skip this row
+                }
+
+                // Create card elements
                 const card = document.createElement('div');
                 card.className = 'card';
 
@@ -23,19 +26,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 card.appendChild(name);
 
                 const position = document.createElement('p');
-                position.innerHTML = `<strong>Position:</strong> ${cols[1].innerText.trim()}`;
+                position.innerHTML = `<strong>Position:</strong> ${cols[1] ? cols[1].innerText.trim() : 'N/A'}`;
                 card.appendChild(position);
 
                 const tags = document.createElement('p');
-                tags.innerHTML = `<strong>Tags:</strong> ${cols[2].innerText.trim()}`;
+                tags.innerHTML = `<strong>Tags:</strong> ${cols[2] ? cols[2].innerText.trim() : 'N/A'}`;
                 card.appendChild(tags);
 
                 const location = document.createElement('p');
-                location.innerHTML = `<strong>Location:</strong> ${cols[3].innerText.trim()}`;
+                location.innerHTML = `<strong>Location:</strong> ${cols[3] ? cols[3].innerText.trim() : 'N/A'}`;
                 card.appendChild(location);
 
                 const email = document.createElement('p');
-                email.innerHTML = `<strong>Contact Email:</strong> ${cols[4].innerText.trim()}`;
+                email.innerHTML = `<strong>Contact Email:</strong> ${cols[4] ? cols[4].innerText.trim() : 'N/A'}`;
                 card.appendChild(email);
 
                 cardContainer.appendChild(card);
