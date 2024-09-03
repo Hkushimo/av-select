@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const sheetUrl = 'https://docs.google.com/spreadsheets/d/1p5EUNGud_FE5gvlYZqr72IhifttLZEc-FNgwFbR0m1U/pubhtml';
+    const sheetUrl = 'https://docs.google.com/spreadsheets/d/your-sheet-id-here/pubhtml';  // Update with your public Google Sheets URL
 
     fetch(sheetUrl)
         .then(response => response.text())
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
             rows.forEach((row) => {
                 const cols = row.querySelectorAll('td');
                 
-                // Check if this row is the header or has an empty name
+                // Check if this row has an empty name or is a header
                 const nameValue = cols[0]?.innerText.trim();
                 if (!nameValue || nameValue.toLowerCase() === 'name') {
                     return; // Skip header and rows with empty "Name" field
