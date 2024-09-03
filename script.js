@@ -70,17 +70,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function filterCards() {
     const searchInput = document.getElementById('searchInput').value.toLowerCase();
-    const stateInput = document.getElementById('stateInput').value.toLowerCase();
+    const cityInput = document.getElementById('cityInput').value.toLowerCase();
+    const stateInput = document.getElementById('stateInput').value;
     const cards = document.querySelectorAll('.card');
 
     cards.forEach(card => {
         const position = card.querySelector('p:nth-child(2)').textContent.toLowerCase();
         const location = card.querySelector('p:nth-child(3)').textContent.toLowerCase();
 
-        const matchesSearch = searchInput === "" || position.includes(searchInput);
-        const matchesState = stateInput === "" || location.includes(stateInput);
+        const city = location.split(',')[0].trim().toLowerCase();  // Extract city from "City, State"
+        const state = location.split(',')[1]?.trim(); // Extract state from "City, State"
 
-        if (matchesSearch && matchesState) {
+        const matchesSearch = searchInput === "" || position.includes(searchInput);
+        const matchesCity = cityInput === "" || city.includes(cityInput);
+        const matchesState = stateInput === "" || state === stateInput;
+
+        if (matchesSearch && matchesCity && matchesState) {
             card.style.display = 'block';
         } else {
             card.style.display = 'none';
