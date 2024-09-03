@@ -29,10 +29,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 position.innerHTML = `<strong>Position:</strong> ${cols[1]?.innerText.trim() || 'N/A'}`;
                 card.appendChild(position);
 
-                const tags = document.createElement('p');
-                tags.innerHTML = `<strong>Tags:</strong> ${cols[2]?.innerText.trim() || 'N/A'}`;
-                card.appendChild(tags);
-
                 const location = document.createElement('p');
                 location.innerHTML = `<strong>Location:</strong> ${cols[3]?.innerText.trim() || 'N/A'}`;
                 card.appendChild(location);
@@ -79,10 +75,9 @@ function filterCards() {
 
     cards.forEach(card => {
         const position = card.querySelector('p:nth-child(2)').textContent.toLowerCase();
-        const tags = card.querySelector('p:nth-child(3)').textContent.toLowerCase();
-        const location = card.querySelector('p:nth-child(4)').textContent.toLowerCase();
+        const location = card.querySelector('p:nth-child(3)').textContent.toLowerCase();
 
-        const matchesSearch = searchInput === "" || position.includes(searchInput) || tags.includes(searchInput);
+        const matchesSearch = searchInput === "" || position.includes(searchInput);
         const matchesState = stateInput === "" || location.includes(stateInput);
 
         if (matchesSearch && matchesState) {
