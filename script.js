@@ -8,41 +8,57 @@ document.addEventListener('DOMContentLoaded', function() {
             const doc = parser.parseFromString(data, 'text/html');
             const rows = doc.querySelectorAll('table tbody tr');
 
-            const tableBody = document.getElementById('tableBody');
+            const cardContainer = document.getElementById('cardContainer');
             rows.forEach((row, index) => {
                 if (index === 0) return; // Skip header row
                 const cols = row.querySelectorAll('td');
-                const tr = document.createElement('tr');
 
-                cols.forEach(col => {
-                    const td = document.createElement('td');
-                    td.textContent = col.innerText;
-                    tr.appendChild(td);
-                });
+                const card = document.createElement('div');
+                card.className = 'card';
 
-                tableBody.appendChild(tr);
+                const name = document.createElement('h2');
+                name.textContent = cols[0].innerText;
+                card.appendChild(name);
+
+                const position = document.createElement('p');
+                position.innerHTML = `<strong>Position:</strong> ${cols[1].innerText}`;
+                card.appendChild(position);
+
+                const tags = document.createElement('p');
+                tags.innerHTML = `<strong>Tags:</strong> ${cols[2].innerText}`;
+                card.appendChild(tags);
+
+                const location = document.createElement('p');
+                location.innerHTML = `<strong>Location:</strong> ${cols[3].innerText}`;
+                card.appendChild(location);
+
+                const email = document.createElement('p');
+                email.innerHTML = `<strong>Contact Email:</strong> ${cols[4].innerText}`;
+                card.appendChild(email);
+
+                cardContainer.appendChild(card);
             });
         })
         .catch(error => console.error('Error fetching the Google Sheets data:', error));
 });
 
-function filterTable() {
+function filterCards() {
     const searchInput = document.getElementById('searchInput').value.toLowerCase();
     const stateInput = document.getElementById('stateInput').value.toLowerCase();
-    const rows = document.getElementById('dataTable').getElementsByTagName('tr');
+    const cards = document.querySelectorAll('.card');
 
-    for (let i = 1; i < rows.length; i++) {
-        const position = rows[i].getElementsByTagName('td')[1].textContent.toLowerCase();
-        const tags = rows[i].getElementsByTagName('td')[2].textContent.toLowerCase();
-        const location = rows[i].getElementsByTagName('td')[3].textContent.toLowerCase();
+    cards.forEach(card => {
+        const position = card.querySelector('p:nth-child(2)').textContent.toLowerCase();
+        const tags = card.querySelector('p:nth-child(3)').textContent.toLowerCase();
+        const location = card.querySelector('p:nth-child(4)').textContent.toLowerCase();
 
         if (
             (position.includes(searchInput) || tags.includes(searchInput)) &&
             (location.includes(stateInput) || stateInput === '')
         ) {
-            rows[i].style.display = '';
+            card.style.display = 'block';
         } else {
-            rows[i].style.display = 'none';
+            card.style.display = 'none';
         }
-    }
+    });
 }
