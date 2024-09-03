@@ -9,7 +9,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const rows = doc.querySelectorAll('table tbody tr');
 
             const tableBody = document.getElementById('tableBody');
-            rows.forEach(row => {
+            rows.forEach((row, index) => {
+                if (index === 0) return; // Skip header row
                 const cols = row.querySelectorAll('td');
                 const tr = document.createElement('tr');
 
