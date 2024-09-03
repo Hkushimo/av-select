@@ -41,6 +41,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 email.innerHTML = `<strong>Contact Email:</strong> ${cols[4]?.innerText.trim() || 'N/A'}`;
                 card.appendChild(email);
 
+                // Add the "Rating" field before the "Leave Review" button
+                const ratingValue = cols[6]?.innerText.trim() || 'No Ratings';
+                const rating = document.createElement('p');
+                rating.innerHTML = `<strong>Rating:</strong> ${ratingValue}`;
+                card.appendChild(rating);
+
                 // Create the "Leave Review" button with hyperlink
                 const reviewLink = cols[5]?.innerText.trim();
                 if (reviewLink) {
