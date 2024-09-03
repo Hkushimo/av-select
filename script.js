@@ -15,9 +15,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Skip the header row or rows with empty required fields
                 const nameValue = cols[0]?.innerText.trim();
                 const positionValue = cols[1]?.innerText.trim();
-                const locationValue = cols[3]?.innerText.trim();
+                const cityValue = cols[2]?.innerText.trim();
+                const stateValue = cols[3]?.innerText.trim();
+                const contactPhoneValue = cols[4]?.innerText.trim();
+                const contactEmailValue = cols[5]?.innerText.trim();
+                const reviewLinkValue = cols[6]?.innerText.trim();
+                const ratingValue = cols[7]?.innerText.trim();
 
-                if (index === 0 || !nameValue || !positionValue || !locationValue) {
+                if (index === 0 || !nameValue || !positionValue || !cityValue || !stateValue) {
                     return; // Skip header and rows with missing critical data
                 }
 
@@ -29,25 +34,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 card.appendChild(name);
 
                 const position = document.createElement('p');
-                position.innerHTML = `<strong>Position:</strong> ${positionValue || 'N/A'}`;
+                position.innerHTML = `<strong>Position:</strong> ${positionValue}`;
                 card.appendChild(position);
 
                 const location = document.createElement('p');
-                location.innerHTML = `<strong>Location:</strong> ${locationValue || 'N/A'}`;
+                location.innerHTML = `<strong>Location:</strong> ${cityValue}, ${stateValue}`;
                 card.appendChild(location);
 
-                const email = document.createElement('p');
-                email.innerHTML = `<strong>Contact Email:</strong> ${cols[4]?.innerText.trim() || 'N/A'}`;
-                card.appendChild(email);
+                const contactPhone = document.createElement('p');
+                contactPhone.innerHTML = `<strong>Contact Phone:</strong> ${contactPhoneValue}`;
+                card.appendChild(contactPhone);
+
+                const contactEmail = document.createElement('p');
+                contactEmail.innerHTML = `<strong>Contact Email:</strong> ${contactEmailValue}`;
+                card.appendChild(contactEmail);
 
                 const rating = document.createElement('p');
-                rating.innerHTML = `<strong>Rating:</strong> ${cols[6]?.innerText.trim() || 'No Ratings'}`;
+                rating.innerHTML = `<strong>Rating:</strong> ${ratingValue}`;
                 card.appendChild(rating);
 
-                const reviewLink = cols[5]?.innerText.trim();
-                if (reviewLink) {
+                if (reviewLinkValue) {
                     const reviewButton = document.createElement('a');
-                    reviewButton.href = reviewLink;
+                    reviewButton.href = reviewLinkValue;
                     reviewButton.target = '_blank';
                     reviewButton.className = 'review-button';
                     reviewButton.textContent = 'Leave Review';
