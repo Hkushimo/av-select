@@ -10,8 +10,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const cardContainer = document.getElementById('cardContainer');
             rows.forEach((row, index) => {
-                if (index === 0) return; // Skip header row
+                // Skip header row and any rows that are empty
                 const cols = row.querySelectorAll('td');
+                if (cols.length === 0 || cols[0].innerText.trim() === 'Name') return;
 
                 const card = document.createElement('div');
                 card.className = 'card';
