@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AVSelect Tech Database</title>
+    <title>Google Sheets Data Search</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -35,9 +35,22 @@
             margin: 5px 0;
         }
     </style>
+    <script>
+        // Simple login prompt
+        function authenticate() {
+            const username = prompt("Enter username:");
+            const password = prompt("Enter password:");
+            if (username !== "admin" || password !== "avselect") {
+                alert("Incorrect credentials. Access denied.");
+                window.location.href = "about:blank"; // Redirect to a blank page if login fails
+            }
+        }
+        // Call authenticate function on page load
+        window.onload = authenticate;
+    </script>
 </head>
 <body>
-    <h1>AVSelect Tech Database</h1>
+    <h1>Google Sheets Data Search</h1>
     <input type="text" id="searchInput" placeholder="Search by Position or Tags..." onkeyup="filterCards()">
     <input type="text" id="stateInput" placeholder="Enter State..." onkeyup="filterCards()">
     <div class="card-container" id="cardContainer">
