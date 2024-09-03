@@ -1,75 +1,37 @@
-let laborers = []; // Initialize an empty array to store laborer data
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQSR7y1JIpzVBlA7MsWqkRJKIoHtQ6MQQOwcrs88Gvj76nv2Ykg0xuN0l6pDW0AKrsiJ8oK8aVQSVAt/pub?gid=0&single=true&output=tsv')
+        .then(response => response.text())
+        .then(data => {
+            const tableBody = document.getElementById('tableBody');
+            const rows = data.split('\n');
+            rows.forEach((row, index) => {
+                if (index === 0) return; // Skip header row
+                const cols = row.split('\t');
+                const tr = document.createElement('tr');
+                cols.forEach(col => {
+                    const td = document.createElement('td');
+                    td.textContent = col;
+                    tr.appendChild(td);
+                });
+                tableBody.appendChild(tr);
+            });
+        })
+        .catch(error => console.error('Error fetching the Google Sheets data:', error));
+});
 
-const sheetUrl = "https://docs.google.com/spreadsheets/d/1p5EUNGud_FE5gvlYZqr72IhifttLZEc-FNgwFbR0m1U/pubhtml";
+function filterTable() {
+    const input = document.getElementById('searchInput').value.toLowerCase();
+    const rows = document.getElementById('dataTable').getElementsByTagName('tr');
 
-fetch(sheetUrl)
-    .then(response => response.text())
-    .then(htmlText => {
-        laborers = parseHTML(htmlText);
-        console.log(laborers); // Log the parsed laborers to check if the data is correct
-    })
-    .catch(error => console.error("Error fetching data:", error));
+    for (let i = 1; i < rows.length; i++) {
+        const position = rows[i].getElementsByTagName('td')[1].textContent.toLowerCase();
+        const tags = rows[i].getElementsByTagName('td')[2].textContent.toLowerCase();
+        const location = rows[i].getElementsByTagName('td')[3].textContent.toLowerCase();
 
-function parseHTML(html) {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-    const table = doc.querySelector('table');
-
-    if (table) {
-        const rows = table.querySelectorAll('tr');
-        const data = [];
-
-        rows.forEach(row => {
-            const cells = row.querySelectorAll('td, th');
-            const rowData = Array.from(cells).map(cell => cell.textContent.trim());
-            data.push(rowData);
-        });
-
-        return data; // Return the extracted data as an array
-    } else {
-        console.error("No table found in the HTML.");
-        return [];
-    }
-}
-
-function lookupLaborer() {
-    const positionInput = document.getElementById('positionInput').value.toLowerCase();
-    const locationInput = document.getElementById('locationInput').value.toLowerCase();
-    const tagsInput = document.getElementById('tagsInput').value.toLowerCase();
-    const resultDiv = document.getElementById('result');
-    resultDiv.innerHTML = ''; // Clear previous results
-
-    console.log("Search Inputs - Position:", positionInput, "Location:", locationInput, "Tags:", tagsInput); // Debugging
-
-    // Assuming first row is the header and skipping it
-    const filteredLaborers = laborers.slice(1).filter(laborer => {
-        const [name, position, experience, location, email] = laborer;
-
-        // Match position, location, and tags/experience based on the presence of the search term
-        const matchesPosition = position.includes(positionInput);
-        const matchesLocation = location.includes(locationInput);
-        const matchesTags = experience.includes(tagsInput);
-
-        // Only one of the criteria needs to match
-        return matchesPosition || matchesLocation || matchesTags;
-    });
-
-    console.log("Filtered Laborers:", filteredLaborers); // Debugging
-
-    if (filteredLaborers.length > 0) {
-        filteredLaborers.forEach(laborer => {
-            const [name, position, experience, location, email] = laborer;
-            resultDiv.innerHTML += `
-                <div style="margin-bottom: 15px;">
-                    <p><strong>Name:</strong> ${name}</p>
-                    <p><strong>Position:</strong> ${position}</p>
-                    <p><strong>Experience:</strong> ${experience}</p>
-                    <p><strong>Location:</strong> ${location}</p>
-                    <p><strong>Email:</strong> ${email}</p>
-                </div>
-            `;
-        });
-    } else {
-        resultDiv.innerHTML = '<p>No laborers found matching the criteria.</p>';
+        if (position.includes(input) || tags.includes(input) || location.includes(input)) {
+            rows[i].style.display = '';
+        } else {
+            rows[i].style.display = 'none';
+        }
     }
 }
