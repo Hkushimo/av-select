@@ -98,9 +98,10 @@ function filterCards() {
         const city = card.querySelector('p:nth-child(3)').textContent.toLowerCase();
         const state = card.querySelector('p:nth-child(4)').textContent.toLowerCase();
 
+        // Check if position, city, and state match the input fields
         const matchesSearch = searchInput === "" || position.includes(searchInput);
         const matchesCity = cityInput === "" || city.includes(cityInput);
-        const matchesState = stateInput === "" || state.includes(stateInput);
+        const matchesState = stateInput === "" || state === stateInput; // Direct equality check for state
 
         if (matchesSearch && matchesCity && matchesState) {
             card.style.display = 'block';
