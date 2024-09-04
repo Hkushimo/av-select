@@ -29,9 +29,8 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
-            padding-top: 30px; /* Even top padding */
-            padding-bottom: 30px; /* Even bottom padding */
-            text-align: left;
+            justify-content: space-between;
+            height: auto;
         }
         .card h2 {
             margin-top: 10px;
@@ -49,24 +48,17 @@
         }
         .button-container {
             display: flex;
-            justify-content: space-between; /* Space between buttons */
-            gap: 10px;
-            width: 100%;
+            justify-content: center;
+            margin-top: 10px;
         }
-        .review-button, .select-button {
+        .review-button {
             display: inline-block;
             padding: 10px 15px;
             color: #fff;
+            background-color: #007BFF;
             border-radius: 5px;
             text-decoration: none;
             text-align: center;
-            flex-grow: 1; /* Ensure both buttons grow equally */
-        }
-        .select-button {
-            background-color: #28a745; /* Green color for Select */
-        }
-        .review-button {
-            background-color: #007BFF; /* Blue color for Leave Review */
         }
         .rating-red {
             color: red;
@@ -87,7 +79,6 @@
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const sheetUrl = 'https://docs.google.com/spreadsheets/d/1p5EUNGud_FE5gvlYZqr72IhifttLZEc-FNgwFbR0m1U/pubhtml';
-
         const stateAbbreviations = {
             "al": "Alabama", "ak": "Alaska", "az": "Arizona", "ar": "Arkansas",
             "ca": "California", "co": "Colorado", "ct": "Connecticut", "de": "Delaware",
@@ -171,15 +162,6 @@
                     const buttonContainer = document.createElement('div');
                     buttonContainer.className = 'button-container';
 
-                    const selectButton = document.createElement('a');
-                    selectButton.href = "#";
-                    selectButton.className = 'select-button';
-                    selectButton.textContent = 'Select';
-                    selectButton.onclick = () => {
-                        alert(`You have selected: ${nameValue} - Sending SMS`);
-                    };
-                    buttonContainer.appendChild(selectButton);
-
                     if (reviewLinkValue) {
                         const reviewButton = document.createElement('a');
                         reviewButton.href = reviewLinkValue;
@@ -201,6 +183,7 @@
             .catch(error => console.error('Error fetching the Google Sheets data:', error));
     });
 
+    // Filter cards based on input fields
     function filterCards() {
         const searchInput = document.getElementById('searchInput').value.toLowerCase();
         const cityInput = document.getElementById('cityInput').value.toLowerCase();
