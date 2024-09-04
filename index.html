@@ -90,7 +90,7 @@
                     const nameValue = cols[0]?.innerText.trim();
                     const positionValue = cols[1]?.innerText.trim();
                     const cityValue = cols[2]?.innerText.trim();
-                    const stateValue = cols[3]?.innerText.trim().toLowerCase(); // normalize to lowercase
+                    let stateValue = cols[3]?.innerText.trim().toLowerCase(); // normalize to lowercase
                     const contactPhoneValue = cols[4]?.innerText.trim();
                     const contactEmailValue = cols[5]?.innerText.trim();
                     const reviewLinkValue = cols[6]?.innerText.trim();
@@ -100,6 +100,9 @@
                     if (index === 0 || !nameValue || !positionValue || !cityValue || !stateValue) {
                         return; // Skip header and rows with missing critical data
                     }
+
+                    // Capitalize the first letter of each word in the state name
+                    stateValue = stateValue.replace(/\b\w/g, c => c.toUpperCase());
 
                     const card = document.createElement('div');
                     card.className = 'card';
