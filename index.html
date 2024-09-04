@@ -15,6 +15,63 @@
             margin-bottom: 20px;
             margin-right: 10px;
         }
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .card {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Ensures content aligns top to bottom */
+            padding-top: 30px; /* Even top padding */
+            padding-bottom: 30px; /* Even bottom padding */
+            height: 450px; /* Fixed height for uniformity */
+            text-align: center;
+        }
+        .card h2 {
+            margin-top: 10px;
+        }
+        .card p {
+            margin: 5px 0;
+        }
+        .card img {
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between; /* Space between buttons */
+            gap: 10px;
+            width: 100%;
+        }
+        .review-button, .select-button {
+            display: inline-block;
+            padding: 10px 15px;
+            color: #fff;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+            flex-grow: 1; /* Ensure both buttons grow equally */
+        }
+        .select-button {
+            background-color: #28a745; /* Green color for Select */
+        }
+        .review-button {
+            background-color: #007BFF; /* Blue color for Leave Review */
+        }
+        .rating-red {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -69,7 +126,7 @@
                     const imageUrl = cols[8]?.innerText.trim();
 
                     if (index === 0 || !nameValue || !positionValue || !cityValue || !stateValue) {
-                        return; 
+                        return;
                     }
 
                     const displayStateValue = stateValue.replace(/\b\w/g, c => c.toUpperCase());
@@ -112,12 +169,11 @@
                     rating.innerHTML = `<strong>Rating:</strong> <span class="${ratingValue < 3 ? 'rating-red' : ''}">${ratingValue.toFixed(2)}</span>`;
                     card.appendChild(rating);
 
-                    // Add buttons in a container for inline layout
                     const buttonContainer = document.createElement('div');
                     buttonContainer.className = 'button-container';
 
                     const selectButton = document.createElement('a');
-                    selectButton.href = "#"; 
+                    selectButton.href = "#";
                     selectButton.className = 'select-button';
                     selectButton.textContent = 'Select';
                     selectButton.onclick = () => {
@@ -135,7 +191,6 @@
                     }
 
                     card.appendChild(buttonContainer);
-
                     cardContainer.appendChild(card);
                 });
 
@@ -159,9 +214,9 @@
         const cards = document.querySelectorAll('.card');
 
         cards.forEach(card => {
-            const position = card.querySelector('p:nth-child(3)').textContent.toLowerCase();
-            const city = card.querySelector('p:nth-child(4)').textContent.toLowerCase();
-            const state = card.querySelector('p:nth-child(5)').textContent.toLowerCase();
+            const position = card.querySelector('p:nth-child(2)').textContent.toLowerCase();
+            const city = card.querySelector('p:nth-child(3)').textContent.toLowerCase();
+            const state = card.querySelector('p:nth-child(4)').textContent.toLowerCase();
 
             const matchesSearch = searchInput === "" || position.includes(searchInput);
             const matchesCity = cityInput === "" || city.includes(cityInput);
