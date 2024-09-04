@@ -29,8 +29,9 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            height: auto;
+            padding-top: 30px; /* Even top padding */
+            padding-bottom: 30px; /* Even bottom padding */
+            text-align: left;
         }
         .card h2 {
             margin-top: 10px;
@@ -48,8 +49,9 @@
         }
         .button-container {
             display: flex;
-            justify-content: space-between; 
+            justify-content: space-between; /* Space between buttons */
             gap: 10px;
+            width: 100%;
         }
         .review-button, .select-button {
             display: inline-block;
@@ -58,13 +60,13 @@
             border-radius: 5px;
             text-decoration: none;
             text-align: center;
-            flex-grow: 1; 
+            flex-grow: 1; /* Ensure both buttons grow equally */
         }
         .select-button {
-            background-color: #28a745; 
+            background-color: #28a745; /* Green color for Select */
         }
         .review-button {
-            background-color: #007BFF;
+            background-color: #007BFF; /* Blue color for Leave Review */
         }
         .rating-red {
             color: red;
@@ -85,6 +87,7 @@
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const sheetUrl = 'https://docs.google.com/spreadsheets/d/1p5EUNGud_FE5gvlYZqr72IhifttLZEc-FNgwFbR0m1U/pubhtml';
+
         const stateAbbreviations = {
             "al": "Alabama", "ak": "Alaska", "az": "Arizona", "ar": "Arkansas",
             "ca": "California", "co": "Colorado", "ct": "Connecticut", "de": "Delaware",
@@ -100,7 +103,6 @@
             "wv": "West Virginia", "wi": "Wisconsin", "wy": "Wyoming"
         };
 
-        // Fetch data from Google Sheet
         fetch(sheetUrl)
             .then(response => response.text())
             .then(data => {
@@ -169,13 +171,12 @@
                     const buttonContainer = document.createElement('div');
                     buttonContainer.className = 'button-container';
 
-                    // Trigger SMS when select button is clicked
                     const selectButton = document.createElement('a');
                     selectButton.href = "#";
                     selectButton.className = 'select-button';
                     selectButton.textContent = 'Select';
                     selectButton.onclick = () => {
-                        triggerSms(contactPhoneValue, nameValue);
+                        alert(`You have selected: ${nameValue} - Sending SMS`);
                     };
                     buttonContainer.appendChild(selectButton);
 
@@ -200,41 +201,6 @@
             .catch(error => console.error('Error fetching the Google Sheets data:', error));
     });
 
-    // SMS API call function using `fetch`
-    function triggerSms(phone, name) {
-        // Ensure phone has a "+" sign and is a valid number
-        if (!phone || phone.length < 10) {
-            alert(`Invalid phone number for ${name}.`);
-            return;
-        }
-
-        const apiUrl = "https://rest.clicksend.com/v3"; // Replace with your SMS API URL
-        const payload = {
-            source: "sdk",
-            to: phone,
-            body: "You are being requested for work via AV Select. Text Y to be connected."
-        };
-
-        fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer 6160D961-CA93-F40E-5F69-58850250B970' // Your API Key
-            },
-            body: JSON.stringify(payload)
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('SMS sent:', data);
-            alert(`Message sent to ${name} at ${phone}`);
-        })
-        .catch(error => {
-            console.error('Error sending SMS:', error);
-            alert(`Error sending message to ${name}.`);
-        });
-    }
-
-    // Filter cards based on input fields
     function filterCards() {
         const searchInput = document.getElementById('searchInput').value.toLowerCase();
         const cityInput = document.getElementById('cityInput').value.toLowerCase();
