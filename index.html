@@ -28,6 +28,8 @@
             width: 300px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             text-align: center;
+            position: relative;
+            padding-bottom: 70px; /* Padding to ensure the button always aligns */
         }
         .card h2 {
             margin-top: 10px;
@@ -45,24 +47,15 @@
         .review-button {
             display: inline-block;
             padding: 10px 15px;
-            margin-top: 20px;
             background-color: #007BFF;
             color: #fff;
             border-radius: 5px;
             text-decoration: none;
             text-align: center;
-        }
-
-        /* Desktop-specific styles */
-        @media (min-width: 768px) {
-            .card {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-            }
-            .review-button {
-                margin-top: auto;
-            }
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
         }
     </style>
 </head>
