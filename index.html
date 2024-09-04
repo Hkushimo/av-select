@@ -29,7 +29,7 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             text-align: center;
             position: relative;
-            padding-bottom: 70px; /* Padding to ensure the button always aligns */
+            padding-bottom: 100px; /* Adjusted for two buttons */
         }
         .card h2 {
             margin-top: 10px;
@@ -44,7 +44,7 @@
             object-fit: cover;
             margin-bottom: 10px;
         }
-        .review-button {
+        .review-button, .select-button {
             display: inline-block;
             padding: 10px 15px;
             background-color: #007BFF;
@@ -53,9 +53,15 @@
             text-decoration: none;
             text-align: center;
             position: absolute;
-            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
+        }
+        .select-button {
+            bottom: 60px; /* Placing the "Select" button above the "Leave Review" button */
+            background-color: #28a745; /* Green color for Select */
+        }
+        .review-button {
+            bottom: 20px;
         }
         .rating-red {
             color: red;
@@ -110,7 +116,7 @@
                     const contactPhoneValue = cols[4]?.innerText.trim();
                     const contactEmailValue = cols[5]?.innerText.trim();
                     const reviewLinkValue = cols[6]?.innerText.trim();
-                    const ratingValue = parseFloat(cols[7]?.innerText.trim());  // Parse as a float number
+                    const ratingValue = parseFloat(cols[7]?.innerText.trim());
                     const imageUrl = cols[8]?.innerText.trim();
 
                     if (index === 0 || !nameValue || !positionValue || !cityValue || !stateValue) {
@@ -156,6 +162,17 @@
                     const rating = document.createElement('p');
                     rating.innerHTML = `<strong>Rating:</strong> <span class="${ratingValue < 3 ? 'rating-red' : ''}">${ratingValue.toFixed(2)}</span>`;
                     card.appendChild(rating);
+
+                    // Add the "Select" button
+                    const selectButton = document.createElement('a');
+                    selectButton.href = "#"; // Placeholder URL, will be replaced with SMS trigger logic
+                    selectButton.className = 'select-button';
+                    selectButton.textContent = 'Select';
+                    selectButton.onclick = () => {
+                        alert(`You have selected: ${nameValue} - Sending SMS`);
+                        // Add your SMS API trigger logic here
+                    };
+                    card.appendChild(selectButton);
 
                     if (reviewLinkValue) {
                         const reviewButton = document.createElement('a');
