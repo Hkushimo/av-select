@@ -105,17 +105,17 @@
                 rows.forEach((row, index) => {
                     const cols = row.querySelectorAll('td');
 
-                    // Update column indexes to account for the timestamp column
-                    const timestampValue = cols[0]?.innerText.trim();
-                    const nameValue = cols[1]?.innerText.trim();
-                    const positionValue = cols[2]?.innerText.trim();
-                    const cityValue = cols[3]?.innerText.trim();
-                    let stateValue = cols[4]?.innerText.trim().toLowerCase();
-                    const contactPhoneValue = cols[5]?.innerText.trim();
-                    const contactEmailValue = cols[6]?.innerText.trim();
-                    const reviewLinkValue = cols[7]?.innerText.trim();
-                    const ratingValue = parseFloat(cols[8]?.innerText.trim());
-                    const imageUrl = cols[9]?.innerText.trim();
+                    // Skip the timestamp column and map the correct data
+                    const timestampValue = cols[0]?.innerText.trim();  // Assuming the timestamp is in the first column
+                    const nameValue = cols[1]?.innerText.trim();  // The name is now in the second column
+                    const positionValue = cols[2]?.innerText.trim();  // Adjusted index for position
+                    const cityValue = cols[3]?.innerText.trim();  // Adjusted index for city
+                    let stateValue = cols[4]?.innerText.trim().toLowerCase();  // Adjusted index for state
+                    const contactPhoneValue = cols[5]?.innerText.trim();  // Adjusted index for phone
+                    const contactEmailValue = cols[6]?.innerText.trim();  // Adjusted index for email
+                    const reviewLinkValue = cols[7]?.innerText.trim();  // Adjusted index for review link
+                    const ratingValue = parseFloat(cols[8]?.innerText.trim());  // Adjusted index for rating
+                    const imageUrl = cols[9]?.innerText.trim();  // Adjusted index for image
 
                     if (index === 0 || !nameValue || !positionValue || !cityValue || !stateValue) {
                         return;
@@ -158,7 +158,7 @@
                     card.appendChild(contactEmail);
 
                     const rating = document.createElement('p');
-                    rating.innerHTML = `<strong>Rating:</strong> <span class="${ratingValue < 3 ? 'rating-red' : ''}">${ratingValue.toFixed(2)}</span>`;
+                    rating.innerHTML = `<strong>Rating:</strong> <span class="${ratingValue < 3 ? 'rating-red' : ''}">${isNaN(ratingValue) ? 'N/A' : ratingValue.toFixed(2)}</span>`;
                     card.appendChild(rating);
 
                     const buttonContainer = document.createElement('div');
