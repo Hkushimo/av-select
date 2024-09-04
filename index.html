@@ -44,24 +44,26 @@
             object-fit: cover;
             margin-bottom: 10px;
         }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
         .review-button, .select-button {
             display: inline-block;
             padding: 10px 15px;
-            background-color: #007BFF;
             color: #fff;
             border-radius: 5px;
             text-decoration: none;
             text-align: center;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
+            width: 120px;
         }
         .select-button {
-            bottom: 60px; /* Placing the "Select" button above the "Leave Review" button */
             background-color: #28a745; /* Green color for Select */
         }
         .review-button {
-            bottom: 20px;
+            background-color: #007BFF;
         }
         .rating-red {
             color: red;
@@ -163,16 +165,18 @@
                     rating.innerHTML = `<strong>Rating:</strong> <span class="${ratingValue < 3 ? 'rating-red' : ''}">${ratingValue.toFixed(2)}</span>`;
                     card.appendChild(rating);
 
-                    // Add the "Select" button
+                    // Add buttons in a container for inline layout
+                    const buttonContainer = document.createElement('div');
+                    buttonContainer.className = 'button-container';
+
                     const selectButton = document.createElement('a');
-                    selectButton.href = "#"; // Placeholder URL, will be replaced with SMS trigger logic
+                    selectButton.href = "#"; 
                     selectButton.className = 'select-button';
                     selectButton.textContent = 'Select';
                     selectButton.onclick = () => {
                         alert(`You have selected: ${nameValue} - Sending SMS`);
-                        // Add your SMS API trigger logic here
                     };
-                    card.appendChild(selectButton);
+                    buttonContainer.appendChild(selectButton);
 
                     if (reviewLinkValue) {
                         const reviewButton = document.createElement('a');
@@ -180,8 +184,10 @@
                         reviewButton.target = '_blank';
                         reviewButton.className = 'review-button';
                         reviewButton.textContent = 'Leave Review';
-                        card.appendChild(reviewButton);
+                        buttonContainer.appendChild(reviewButton);
                     }
+
+                    card.appendChild(buttonContainer);
 
                     cardContainer.appendChild(card);
                 });
