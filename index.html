@@ -200,7 +200,7 @@
             .catch(error => console.error('Error fetching the Google Sheets data:', error));
     });
 
-    // SMS API call function
+    // SMS API call function using `fetch`
     function triggerSms(phone, name) {
         // Ensure phone has a "+" sign and is a valid number
         if (!phone || phone.length < 10) {
@@ -208,21 +208,28 @@
             return;
         }
 
-        // SMS API data (insert your actual API key and endpoint)
-        var smsApi = new SMSApi("hakeem@keemthedesigner.xyz", "6160D961-CA93-F40E-5F69-58850250B970");
-        var smsMessage = new SmsMessage();
-        smsMessage.source = "sdk";
-        smsMessage.to = phone;
-        smsMessage.body = "You are being requested for work via AV Select. Text Y to be connected.";
+        const apiUrl = "https://rest.clicksend.com/v3"; // Replace with your SMS API URL
+        const payload = {
+            source: "sdk",
+            to: phone,
+            body: "You are being requested for work via AV Select. Text Y to be connected."
+        };
 
-        var smsCollection = new SmsMessageCollection();
-        smsCollection.messages = [smsMessage];
-
-        smsApi.smsSendPost(smsCollection).then(function(response) {
-            console.log(response.body);
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer 6160D961-CA93-F40E-5F69-58850250B970' // Your API Key
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('SMS sent:', data);
             alert(`Message sent to ${name} at ${phone}`);
-        }).catch(function(err) {
-            console.error(err.body);
+        })
+        .catch(error => {
+            console.error('Error sending SMS:', error);
             alert(`Error sending message to ${name}.`);
         });
     }
