@@ -57,6 +57,9 @@
             left: 50%;
             transform: translateX(-50%);
         }
+        .rating-red {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -107,7 +110,7 @@
                     const contactPhoneValue = cols[4]?.innerText.trim();
                     const contactEmailValue = cols[5]?.innerText.trim();
                     const reviewLinkValue = cols[6]?.innerText.trim();
-                    const ratingValue = cols[7]?.innerText.trim();
+                    const ratingValue = parseFloat(cols[7]?.innerText.trim());  // Parse as a float number
                     const imageUrl = cols[8]?.innerText.trim();
 
                     if (index === 0 || !nameValue || !positionValue || !cityValue || !stateValue) {
@@ -151,7 +154,7 @@
                     card.appendChild(contactEmail);
 
                     const rating = document.createElement('p');
-                    rating.innerHTML = `<strong>Rating:</strong> ${ratingValue}`;
+                    rating.innerHTML = `<strong>Rating:</strong> <span class="${ratingValue < 3 ? 'rating-red' : ''}">${ratingValue.toFixed(2)}</span>`;
                     card.appendChild(rating);
 
                     if (reviewLinkValue) {
