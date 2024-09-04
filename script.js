@@ -1,5 +1,4 @@
-<script>
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const sheetUrl = 'https://docs.google.com/spreadsheets/d/1p5EUNGud_FE5gvlYZqr72IhifttLZEc-FNgwFbR0m1U/pubhtml';
 
     const stateAbbreviations = {
@@ -28,28 +27,26 @@ document.addEventListener('DOMContentLoaded', function() {
             rows.forEach((row, index) => {
                 const cols = row.querySelectorAll('td');
 
-                // Skip the header row or rows with empty required fields
-                const nameValue = cols[0]?.innerText.trim();
-                const positionValue = cols[1]?.innerText.trim();
-                const cityValue = cols[2]?.innerText.trim();
-                let stateValue = cols[3]?.innerText.trim().toLowerCase();
-                const contactPhoneValue = cols[4]?.innerText.trim();
-                const contactEmailValue = cols[5]?.innerText.trim();
-                const reviewLinkValue = cols[6]?.innerText.trim();
-                const ratingValue = cols[7]?.innerText.trim();
-                const imageUrl = cols[8]?.innerText.trim();
+                // Skip the timestamp (column 0) and adjust all columns accordingly
+                const nameValue = cols[1]?.innerText.trim();
+                const positionValue = cols[2]?.innerText.trim();
+                const cityValue = cols[3]?.innerText.trim();
+                let stateValue = cols[4]?.innerText.trim().toLowerCase();
+                const contactPhoneValue = cols[5]?.innerText.trim();
+                const contactEmailValue = cols[6]?.innerText.trim();
+                const reviewLinkValue = cols[7]?.innerText.trim();
+                const ratingValue = parseFloat(cols[8]?.innerText.trim());
+                const imageUrl = cols[9]?.innerText.trim();
 
                 if (index === 0 || !nameValue || !positionValue || !cityValue || !stateValue) {
                     return; // Skip header and rows with missing critical data
                 }
 
-                // Capitalize the first letter of each word in the state name
-                stateValue = stateValue.replace(/\b\w/g, c => c.toUpperCase());
+                const displayStateValue = stateValue.replace(/\b\w/g, c => c.toUpperCase());
 
                 const card = document.createElement('div');
                 card.className = 'card';
 
-                // Add image if the URL exists
                 if (imageUrl) {
                     const img = document.createElement('img');
                     img.src = imageUrl;
@@ -62,28 +59,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 card.appendChild(name);
 
                 const position = document.createElement('p');
-                position.innerHTML = `<strong>Position:</strong> ${positionValue}`;
+                position.innerHTML = `<strong>Position(s):</strong> ${positionValue}`;
                 card.appendChild(position);
 
-                // Display City and State as separate fields
                 const city = document.createElement('p');
                 city.innerHTML = `<strong>City:</strong> ${cityValue}`;
                 card.appendChild(city);
 
                 const state = document.createElement('p');
-                state.innerHTML = `<strong>State:</strong> ${stateValue}`;
+                state.innerHTML = `<strong>State:</strong> ${displayStateValue}`;
                 card.appendChild(state);
 
                 const contactPhone = document.createElement('p');
-                contactPhone.innerHTML = `<strong>Contact Phone:</strong> ${contactPhoneValue}`;
+                contactPhone.innerHTML = `<strong>Phone:</strong> ${contactPhoneValue}`;
                 card.appendChild(contactPhone);
 
                 const contactEmail = document.createElement('p');
-                contactEmail.innerHTML = `<strong>Contact Email:</strong> ${contactEmailValue}`;
+                contactEmail.innerHTML = `<strong>Email:</strong> ${contactEmailValue || 'n/a'}`;
                 card.appendChild(contactEmail);
 
                 const rating = document.createElement('p');
-                rating.innerHTML = `<strong>Rating:</strong> ${ratingValue}`;
+                rating.innerHTML = `<strong>Rating:</strong> <span class="${isNaN(ratingValue) ? '' : (ratingValue < 3 ? 'rating-red' : '')}">${isNaN(ratingValue) ? 'N/A' : ratingValue.toFixed(2)}</span>`;
                 card.appendChild(rating);
 
                 if (reviewLinkValue) {
@@ -92,22 +88,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     reviewButton.target = '_blank';
                     reviewButton.className = 'review-button';
                     reviewButton.textContent = 'Leave Review';
-                    reviewButton.style.display = 'inline-block';
-                    reviewButton.style.padding = '10px 15px';
-                    reviewButton.style.marginTop = '10px';
-                    reviewButton.style.backgroundColor = '#007BFF';
-                    reviewButton.style.color = '#fff';
-                    reviewButton.style.borderRadius = '5px';
-                    reviewButton.style.textDecoration = 'none';
-                    reviewButton.style.textAlign = 'center';
                     card.appendChild(reviewButton);
                 }
 
                 cardContainer.appendChild(card);
             });
 
-            // Attach the filter functionality after cards are generated
-            filterCards(); // Ensure it runs on initial load
+            filterCards();
             document.getElementById('searchInput').addEventListener('input', filterCards);
             document.getElementById('cityInput').addEventListener('input', filterCards);
             document.getElementById('stateInput').addEventListener('input', filterCards);
@@ -120,17 +107,16 @@ function filterCards() {
     const cityInput = document.getElementById('cityInput').value.toLowerCase();
     let stateInput = document.getElementById('stateInput').value.toLowerCase();
 
-    // Check if the input is an abbreviation, and if so, map it to the full state name
     if (stateInput.length === 2 && stateAbbreviations[stateInput]) {
-        stateInput = stateAbbreviations[stateInput];
+        stateInput = stateAbbreviations[stateInput].toLowerCase();
     }
 
     const cards = document.querySelectorAll('.card');
 
     cards.forEach(card => {
-        const position = card.querySelector('p:nth-child(3)').textContent.toLowerCase();
-        const city = card.querySelector('p:nth-child(4)').textContent.toLowerCase();
-        const state = card.querySelector('p:nth-child(5)').textContent.toLowerCase();
+        const position = card.querySelector('p:nth-child(2)').textContent.toLowerCase();
+        const city = card.querySelector('p:nth-child(3)').textContent.toLowerCase();
+        const state = card.querySelector('p:nth-child(4)').textContent.toLowerCase();
 
         const matchesSearch = searchInput === "" || position.includes(searchInput);
         const matchesCity = cityInput === "" || city.includes(cityInput);
@@ -143,4 +129,3 @@ function filterCards() {
         }
     });
 }
-</script>
