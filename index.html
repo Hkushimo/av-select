@@ -202,12 +202,18 @@
 
     // SMS API call function
     function triggerSms(phone, name) {
-        var smsApi = new SMSApi("hakeem@keemthedesigner.xyz", "6160D961-CA93-F40E-5F69-58850250B970");
+        // Ensure phone has a "+" sign and is a valid number
+        if (!phone || phone.length < 10) {
+            alert(`Invalid phone number for ${name}.`);
+            return;
+        }
 
+        // SMS API data (insert your actual API key and endpoint)
+        var smsApi = new SMSApi("hakeem@keemthedesigner.xyz", "6160D961-CA93-F40E-5F69-58850250B970");
         var smsMessage = new SmsMessage();
         smsMessage.source = "sdk";
         smsMessage.to = phone;
-        smsMessage.body = `You are being requested for work via AV Select. Text Y to be connected.`;
+        smsMessage.body = "You are being requested for work via AV Select. Text Y to be connected.";
 
         var smsCollection = new SmsMessageCollection();
         smsCollection.messages = [smsMessage];
