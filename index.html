@@ -4,64 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AV Tech Search</title>
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
         }
-
         #searchInput, #cityInput, #stateInput {
             width: 300px;
             padding: 10px;
             margin-bottom: 20px;
             margin-right: 10px;
         }
-
-        /* Swiper specific styles */
-        .swiper-container {
-            width: 100%;
-            height: 100%;
-        }
-
-        .swiper-wrapper {
-            display: flex;
-        }
-
-        .swiper-slide {
-            display: flex;
-            justify-content: center;
-        }
-
         .card-container {
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
         }
-
         .card {
             background-color: #f9f9f9;
             border: 1px solid #ddd;
             border-radius: 8px;
             padding: 20px;
             width: 300px;
-            height: 450px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            text-align: left;
+            height: 450px; /* Ensure card height is consistent */
         }
-
         .card h2 {
             margin-top: 10px;
         }
-
         .card p {
             margin: 5px 0;
             line-height: normal;
         }
-
         .card img {
             border-radius: 50%;
             width: 80px;
@@ -69,14 +46,12 @@
             object-fit: cover;
             margin-bottom: 10px;
         }
-
         .button-container {
             display: flex;
             justify-content: space-between;
             gap: 10px;
-            margin-top: 5px;
+            margin-top: 5px; /* Ensure there is always 5px of padding between text and buttons */
         }
-
         .review-button, .select-button {
             display: inline-block;
             padding: 10px 15px;
@@ -86,24 +61,14 @@
             text-align: center;
             flex-grow: 1;
         }
-
         .select-button {
             background-color: #28a745;
         }
-
         .review-button {
             background-color: #007BFF;
         }
-
         .rating-red {
             color: red;
-        }
-
-        /* Ensuring swiper is full width on mobile */
-        @media (max-width: 768px) {
-            .swiper-slide {
-                width: 100%;
-            }
         }
     </style>
 </head>
@@ -114,13 +79,9 @@
     <input type="text" id="cityInput" placeholder="Enter City..." onkeyup="filterCards()">
     <input type="text" id="stateInput" placeholder="Enter State (Full Name or Abbreviation)..." onkeyup="filterCards()">
 
-    <div class="swiper-container">
-        <div class="swiper-wrapper" id="cardContainer">
-            <!-- Cards will be populated here by script.js -->
-        </div>
+    <div class="card-container" id="cardContainer">
+        <!-- Cards will be populated here by script.js -->
     </div>
-
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -167,9 +128,6 @@
                     }
 
                     const displayStateValue = stateValue.replace(/\b\w/g, c => c.toUpperCase());
-
-                    const slide = document.createElement('div');
-                    slide.className = 'swiper-slide';
 
                     const card = document.createElement('div');
                     card.className = 'card';
@@ -231,24 +189,7 @@
                     }
 
                     card.appendChild(buttonContainer);
-                    slide.appendChild(card);
-                    cardContainer.appendChild(slide);
-                });
-
-                // Initialize Swiper
-                const swiper = new Swiper('.swiper-container', {
-                    direction: 'horizontal',
-                    loop: false,
-                    slidesPerView: 1,
-                    spaceBetween: 10,
-                    pagination: {
-                        el: '.swiper-pagination',
-                        clickable: true,
-                    },
-                    navigation: {
-                        nextEl: '.swiper-button-next',
-                        prevEl: '.swiper-button-prev',
-                    },
+                    cardContainer.appendChild(card);
                 });
 
                 filterCards();
@@ -268,7 +209,7 @@
             stateInput = stateAbbreviations[stateInput].toLowerCase();
         }
 
-        const cards = document.querySelectorAll('.swiper-slide');
+        const cards = document.querySelectorAll('.card');
 
         cards.forEach(card => {
             const position = card.querySelector('p:nth-child(2)').textContent.toLowerCase();
