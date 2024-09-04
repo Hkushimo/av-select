@@ -28,9 +28,6 @@
             width: 300px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
         }
         .card h2 {
             margin-top: 10px;
@@ -48,12 +45,24 @@
         .review-button {
             display: inline-block;
             padding: 10px 15px;
+            margin-top: 20px;
             background-color: #007BFF;
             color: #fff;
             border-radius: 5px;
             text-decoration: none;
             text-align: center;
-            margin-top: auto;
+        }
+
+        /* Desktop-specific styles */
+        @media (min-width: 768px) {
+            .card {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+            .review-button {
+                margin-top: auto;
+            }
         }
     </style>
 </head>
@@ -109,7 +118,7 @@
                     const imageUrl = cols[8]?.innerText.trim();
 
                     if (index === 0 || !nameValue || !positionValue || !cityValue || !stateValue) {
-                        return; // Skip header and rows with missing critical data
+                        return; 
                     }
 
                     const displayStateValue = stateValue.replace(/\b\w/g, c => c.toUpperCase());
@@ -161,10 +170,6 @@
                         card.appendChild(reviewButton);
                     }
 
-                    card.setAttribute('data-state', stateValue);
-                    card.setAttribute('data-city', cityValue.toLowerCase());
-                    card.setAttribute('data-position', positionValue.toLowerCase());
-
                     cardContainer.appendChild(card);
                 });
 
@@ -188,9 +193,9 @@
         const cards = document.querySelectorAll('.card');
 
         cards.forEach(card => {
-            const position = card.getAttribute('data-position');
-            const city = card.getAttribute('data-city');
-            const state = card.getAttribute('data-state');
+            const position = card.querySelector('p:nth-child(3)').textContent.toLowerCase();
+            const city = card.querySelector('p:nth-child(4)').textContent.toLowerCase();
+            const state = card.querySelector('p:nth-child(5)').textContent.toLowerCase();
 
             const matchesSearch = searchInput === "" || position.includes(searchInput);
             const matchesCity = cityInput === "" || city.includes(cityInput);
