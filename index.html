@@ -108,7 +108,7 @@
                     rows.forEach((row, index) => {
                         const cols = row.querySelectorAll('td');
 
-                        // Adjust for timestamp in column 0, so starting from column 1
+                        // Skip the timestamp (column 0) and adjust all columns accordingly
                         const nameValue = cols[1]?.innerText.trim();
                         const positionValue = cols[2]?.innerText.trim();
                         const cityValue = cols[3]?.innerText.trim();
@@ -120,7 +120,7 @@
                         const imageUrl = cols[9]?.innerText.trim();
 
                         if (index === 0 || !nameValue || !positionValue || !cityValue || !stateValue) {
-                            return;
+                            return; // Skip header and rows with missing critical data
                         }
 
                         const displayStateValue = stateValue.replace(/\b\w/g, c => c.toUpperCase());
