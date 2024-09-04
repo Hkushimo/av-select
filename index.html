@@ -29,9 +29,8 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
-            padding-top: 30px; /* Even top padding */
-            padding-bottom: 30px; /* Even bottom padding */
-            text-align: left;
+            justify-content: space-between;
+            height: 450px; /* Ensure card height is consistent */
         }
         .card h2 {
             margin-top: 10px;
@@ -49,9 +48,9 @@
         }
         .button-container {
             display: flex;
-            justify-content: space-between; /* Space between buttons */
+            justify-content: space-between;
             gap: 10px;
-            width: 100%;
+            margin-top: 5px; /* Ensure there is always 5px of padding between text and buttons */
         }
         .review-button, .select-button {
             display: inline-block;
@@ -60,13 +59,13 @@
             border-radius: 5px;
             text-decoration: none;
             text-align: center;
-            flex-grow: 1; /* Ensure both buttons grow equally */
+            flex-grow: 1;
         }
         .select-button {
-            background-color: #28a745; /* Green color for Select */
+            background-color: #28a745;
         }
         .review-button {
-            background-color: #007BFF; /* Blue color for Leave Review */
+            background-color: #007BFF;
         }
         .rating-red {
             color: red;
