@@ -1,6 +1,7 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const sheetUrl = 'https://docs.google.com/spreadsheets/d/1p5EUNGud_FE5gvlYZqr72IhifttLZEc-FNgwFbR0m1U/pubhtml';
+document.addEventListener('DOMContentLoaded', function() {
+    const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSOZ_RmjKIIyx_EeTdU-AyzdgMiRExLAHyx6tiJMfu1MnZ-mQRCmueAzEiVtcT9KJexmX0k7NjTzv4g/pubhtml';
 
+    // Function to map state abbreviations to full names
     const stateAbbreviations = {
         "al": "Alabama", "ak": "Alaska", "az": "Arizona", "ar": "Arkansas",
         "ca": "California", "co": "Colorado", "ct": "Connecticut", "de": "Delaware",
@@ -27,32 +28,30 @@ document.addEventListener('DOMContentLoaded', function () {
             rows.forEach((row, index) => {
                 const cols = row.querySelectorAll('td');
 
-                // Skip the timestamp (column 0) and adjust all columns accordingly
+                // Adjusted columns based on your current sheet structure
+                const timestampValue = cols[0]?.innerText.trim();
                 const nameValue = cols[1]?.innerText.trim();
                 const positionValue = cols[2]?.innerText.trim();
                 const cityValue = cols[3]?.innerText.trim();
-                let stateValue = cols[4]?.innerText.trim().toLowerCase();
-                const contactPhoneValue = cols[5]?.innerText.trim();
-                const contactEmailValue = cols[6]?.innerText.trim();
+                const stateValue = cols[4]?.innerText.trim();
+                const phoneValue = cols[5]?.innerText.trim();
+                const emailValue = cols[6]?.innerText.trim();
                 const reviewLinkValue = cols[7]?.innerText.trim();
-                const ratingValue = parseFloat(cols[8]?.innerText.trim());
-                const imageUrl = cols[9]?.innerText.trim();
+                let ratingValue = cols[8]?.innerText.trim();
+
+                // Handling missing or non-numeric rating values
+                if (!ratingValue || isNaN(parseFloat(ratingValue))) {
+                    ratingValue = 'N/A';
+                } else {
+                    ratingValue = parseFloat(ratingValue).toFixed(2);
+                }
 
                 if (index === 0 || !nameValue || !positionValue || !cityValue || !stateValue) {
                     return; // Skip header and rows with missing critical data
                 }
 
-                const displayStateValue = stateValue.replace(/\b\w/g, c => c.toUpperCase());
-
                 const card = document.createElement('div');
                 card.className = 'card';
-
-                if (imageUrl) {
-                    const img = document.createElement('img');
-                    img.src = imageUrl;
-                    img.alt = `${nameValue}'s photo`;
-                    card.appendChild(img);
-                }
 
                 const name = document.createElement('h2');
                 name.textContent = nameValue;
@@ -67,20 +66,23 @@ document.addEventListener('DOMContentLoaded', function () {
                 card.appendChild(city);
 
                 const state = document.createElement('p');
-                state.innerHTML = `<strong>State:</strong> ${displayStateValue}`;
+                state.innerHTML = `<strong>State:</strong> ${stateValue}`;
                 card.appendChild(state);
 
-                const contactPhone = document.createElement('p');
-                contactPhone.innerHTML = `<strong>Phone:</strong> ${contactPhoneValue}`;
-                card.appendChild(contactPhone);
+                const phone = document.createElement('p');
+                phone.innerHTML = `<strong>Phone:</strong> ${phoneValue}`;
+                card.appendChild(phone);
 
-                const contactEmail = document.createElement('p');
-                contactEmail.innerHTML = `<strong>Email:</strong> ${contactEmailValue || 'n/a'}`;
-                card.appendChild(contactEmail);
+                const email = document.createElement('p');
+                email.innerHTML = `<strong>Email:</strong> ${emailValue}`;
+                card.appendChild(email);
 
                 const rating = document.createElement('p');
-                rating.innerHTML = `<strong>Rating:</strong> <span class="${isNaN(ratingValue) ? '' : (ratingValue < 3 ? 'rating-red' : '')}">${isNaN(ratingValue) ? 'N/A' : ratingValue.toFixed(2)}</span>`;
+                rating.innerHTML = `<strong>Rating:</strong> <span class="${ratingValue < 3 ? 'rating-red' : ''}">${ratingValue}</span>`;
                 card.appendChild(rating);
+
+                const buttonContainer = document.createElement('div');
+                buttonContainer.className = 'button-container';
 
                 if (reviewLinkValue) {
                     const reviewButton = document.createElement('a');
@@ -88,16 +90,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     reviewButton.target = '_blank';
                     reviewButton.className = 'review-button';
                     reviewButton.textContent = 'Leave Review';
-                    card.appendChild(reviewButton);
+                    buttonContainer.appendChild(reviewButton);
                 }
 
+                card.appendChild(buttonContainer);
                 cardContainer.appendChild(card);
             });
-
-            filterCards();
-            document.getElementById('searchInput').addEventListener('input', filterCards);
-            document.getElementById('cityInput').addEventListener('input', filterCards);
-            document.getElementById('stateInput').addEventListener('input', filterCards);
         })
         .catch(error => console.error('Error fetching the Google Sheets data:', error));
 });
@@ -107,6 +105,7 @@ function filterCards() {
     const cityInput = document.getElementById('cityInput').value.toLowerCase();
     let stateInput = document.getElementById('stateInput').value.toLowerCase();
 
+    // Check if the input is an abbreviation, and if so, map it to the full state name
     if (stateInput.length === 2 && stateAbbreviations[stateInput]) {
         stateInput = stateAbbreviations[stateInput].toLowerCase();
     }
