@@ -9,15 +9,12 @@ document.addEventListener('DOMContentLoaded', function () {
             const rows = doc.querySelectorAll('table tbody tr');
 
             const cardContainer = document.getElementById('cardContainer');
-            let allCards = []; // Store cards for filtering
-
             rows.forEach((row, index) => {
                 const cols = row.querySelectorAll('td');
 
-                // Skip empty rows and ensure there is enough data to create a card
-                if (!cols || cols.length < 9) return;
+                // Skip header row
+                if (index === 0) return;
 
-                // Get data from columns
                 const timestamp = cols[0]?.innerText.trim();
                 const nameValue = cols[1]?.innerText.trim();
                 const positionValue = cols[2]?.innerText.trim();
@@ -83,40 +80,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 card.appendChild(buttonContainer);
                 cardContainer.appendChild(card);
-
-                // Store card for filtering
-                allCards.push({
-                    cardElement: card,
-                    nameValue,
-                    positionValue,
-                    cityValue,
-                    stateValue,
-                });
             });
-
-            // Add filtering functionality
-            document.getElementById('searchInput').addEventListener('input', () => filterCards(allCards));
-            document.getElementById('cityInput').addEventListener('input', () => filterCards(allCards));
-            document.getElementById('stateInput').addEventListener('input', () => filterCards(allCards));
         })
         .catch(error => console.error('Error fetching the Google Sheets data:', error));
 });
 
-// Filter function
-function filterCards(cards) {
+function filterCards() {
     const searchInput = document.getElementById('searchInput').value.toLowerCase();
     const cityInput = document.getElementById('cityInput').value.toLowerCase();
     const stateInput = document.getElementById('stateInput').value.toLowerCase();
 
-    cards.forEach(({ cardElement, nameValue, positionValue, cityValue, stateValue }) => {
-        const matchesSearch = !searchInput || positionValue.toLowerCase().includes(searchInput);
-        const matchesCity = !cityInput || cityValue.toLowerCase().includes(cityInput);
-        const matchesState = !stateInput || stateValue.toLowerCase().includes(stateInput);
+    const cards = document.querySelectorAll('.card');
 
-        if (matchesSearch && matchesCity && matchesState) {
-            cardElement.style.display = 'block';  // Show the card
-        } else {
-            cardElement.style.display = 'none';   // Hide the card
-        }
-    });
-}
+    cards.forEach(card => {
+        const position = card.querySelector('p:nth-child(2)').textContent.toLowerCase();
+        const city = card.querySelector('p:nth-child(3)').textContent.toLowerCase();
+        const state = card.querySelector('p:nth-child(4)').textContent.toLowerCase();
+
+        const matchesSearch = searchInput === "" || position.includes(searchInput);
+        const matchesCity = cityInput === ""
