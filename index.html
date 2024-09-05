@@ -30,6 +30,7 @@
             display: flex;
             flex-direction: column;
             text-align: left;
+            position: relative;
         }
         .card h2 {
             margin-top: 10px;
@@ -46,16 +47,18 @@
         }
         .button-container {
             display: flex;
-            justify-content: flex-start;
-            gap: 10px;
+            justify-content: center;
+            margin-top: auto;
         }
         .review-button {
-            padding: 10px 15px;
+            padding: 8px 12px;
             background-color: #007BFF;
             color: #fff;
             border-radius: 5px;
             text-decoration: none;
             text-align: center;
+            font-size: 14px;
+            min-width: 100px; /* Ensures buttons are the same size */
         }
         .rating-red {
             color: red;
@@ -67,10 +70,10 @@
 
     <input type="text" id="searchInput" placeholder="Search by Position..." onkeyup="filterCards()">
     <input type="text" id="cityInput" placeholder="Enter City..." onkeyup="filterCards()">
-    <input type="text" id="stateInput" placeholder="Enter State..." onkeyup="filterCards()">
+    <input type="text" id="stateInput" placeholder="Enter State (Full Name or Abbreviation)..." onkeyup="filterCards()">
 
     <div class="card-container" id="cardContainer">
-        <!-- Cards will be populated here -->
+        <!-- Cards will be populated here by script.js -->
     </div>
 
     <script src="script.js"></script>
