@@ -9,17 +9,20 @@
             font-family: Arial, sans-serif;
             margin: 20px;
         }
+
         #searchInput, #cityInput, #stateInput {
             width: 300px;
             padding: 10px;
             margin-bottom: 20px;
             margin-right: 10px;
         }
+
         .card-container {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
         }
+
         .card {
             background-color: #f9f9f9;
             border: 1px solid #ddd;
@@ -32,12 +35,15 @@
             text-align: left;
             position: relative;
         }
+
         .card h2 {
             margin-top: 10px;
         }
+
         .card p {
             margin: 5px 0;
         }
+
         .card img {
             border-radius: 50%;
             width: 80px;
@@ -45,11 +51,13 @@
             object-fit: cover;
             margin-bottom: 10px;
         }
+
         .button-container {
             display: flex;
             justify-content: center;
             margin-top: auto;
         }
+
         .review-button {
             padding: 8px 12px;
             background-color: #007BFF;
@@ -60,9 +68,11 @@
             font-size: 14px;
             min-width: 100px; /* Ensures buttons are the same size */
         }
+
         .rating-red {
             color: red;
         }
+
     </style>
 </head>
 <body>
@@ -73,7 +83,7 @@
     <input type="text" id="stateInput" placeholder="Enter State (Full Name or Abbreviation)..." onkeyup="filterCards()">
 
     <div class="card-container" id="cardContainer">
-        <!-- Cards will be populated here by script.js -->
+        <!-- Cards will be populated here -->
     </div>
 
     <script src="script.js"></script>
