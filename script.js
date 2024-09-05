@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const emailValue = cols[6]?.innerText.trim();
                 const ratingValue = parseFloat(cols[7]?.innerText.trim());
                 const reviewLinkValue = cols[8]?.innerText.trim();
-                const imageUrl = cols[9]?.innerText.trim();  // Assuming image is in Column I
+                const imageUrl = cols[9]?.innerText.trim();
 
                 // Create card
                 const card = document.createElement('div');
@@ -98,4 +98,13 @@ function filterCards() {
         const state = card.querySelector('p:nth-child(4)').textContent.toLowerCase();
 
         const matchesSearch = searchInput === "" || position.includes(searchInput);
-        const matchesCity = cityInput === ""
+        const matchesCity = cityInput === "" || city.includes(cityInput);
+        const matchesState = stateInput === "" || state.includes(stateInput);
+
+        if (matchesSearch && matchesCity && matchesState) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
