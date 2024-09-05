@@ -24,7 +24,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 const emailValue = cols[6]?.innerText.trim();
                 const ratingValue = parseFloat(cols[7]?.innerText.trim());
                 const reviewLinkValue = cols[8]?.innerText.trim();
-                const imageUrl = cols[9]?.innerText.trim();  // Assuming image is in Column I
+                const imageUrl = cols[9]?.innerText.trim();
+
+                // Ensure necessary values exist, otherwise skip this row
+                if (!nameValue || !positionValue || !cityValue || !stateValue) return;
 
                 // Create card
                 const card = document.createElement('div');
@@ -81,6 +84,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 card.appendChild(buttonContainer);
                 cardContainer.appendChild(card);
             });
+
+            // Ensure that filterCards is called after the cards are created
+            filterCards();
         })
         .catch(error => console.error('Error fetching the Google Sheets data:', error));
 });
