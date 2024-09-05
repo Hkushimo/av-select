@@ -9,27 +9,33 @@ document.addEventListener('DOMContentLoaded', function () {
             const rows = doc.querySelectorAll('table tbody tr');
 
             const cardContainer = document.getElementById('cardContainer');
+            let allCards = []; // Keep track of all cards
+
             rows.forEach((row, index) => {
                 const cols = row.querySelectorAll('td');
 
-                // Skip header row
+                // Skip the header row
                 if (index === 0) return;
 
-                const timestamp = cols[0]?.innerText.trim();
-                const nameValue = cols[1]?.innerText.trim();
-                const positionValue = cols[2]?.innerText.trim();
-                const cityValue = cols[3]?.innerText.trim();
-                const stateValue = cols[4]?.innerText.trim();
-                const phoneValue = cols[5]?.innerText.trim();
-                const emailValue = cols[6]?.innerText.trim();
+                // Validate and trim values
+                const timestamp = cols[0]?.innerText.trim() || 'N/A';
+                const nameValue = cols[1]?.innerText.trim() || 'N/A';
+                const positionValue = cols[2]?.innerText.trim() || 'N/A';
+                const cityValue = cols[3]?.innerText.trim() || 'N/A';
+                const stateValue = cols[4]?.innerText.trim() || 'N/A';
+                const phoneValue = cols[5]?.innerText.trim() || 'N/A';
+                const emailValue = cols[6]?.innerText.trim() || 'N/A';
                 const ratingValue = parseFloat(cols[7]?.innerText.trim());
                 const reviewLinkValue = cols[8]?.innerText.trim();
-                const imageUrl = cols[9]?.innerText.trim();
+                const imageUrl = cols[9]?.innerText.trim(); // Assuming the image URL is in column 10
 
-                // Ensure necessary values exist, otherwise skip this row
-                if (!nameValue || !positionValue || !cityValue || !stateValue) return;
+                // Check if mandatory fields are present (name, position, city, state)
+                if (nameValue === 'N/A' || positionValue === 'N/A') {
+                    console.warn(`Skipping row due to missing critical data at index ${index}`);
+                    return;
+                }
 
-                // Create card
+                // Create card element
                 const card = document.createElement('div');
                 card.className = 'card';
 
@@ -68,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 rating.innerHTML = `<strong>Rating:</strong> <span class="${ratingValue < 3 ? 'rating-red' : ''}">${isNaN(ratingValue) ? 'N/A' : ratingValue.toFixed(2)}</span>`;
                 card.appendChild(rating);
 
-                // Create review button
+                // Create button container for review link
                 const buttonContainer = document.createElement('div');
                 buttonContainer.className = 'button-container';
 
@@ -83,10 +89,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 card.appendChild(buttonContainer);
                 cardContainer.appendChild(card);
+                allCards.push(card); // Store reference to the card for filtering
             });
 
-            // Ensure that filterCards is called after the cards are created
-            filterCards();
+            // Call the filterCards function after cards are loaded
+            filterCards(); // Ensure filtering works after initial load
         })
         .catch(error => console.error('Error fetching the Google Sheets data:', error));
 });
